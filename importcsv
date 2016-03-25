@@ -1,0 +1,60 @@
+#!/usr/bin/env sh
+help="""
+\nimportcsv 1.0 (2016 Mar 25)\n\nusage: importcsv -f filepath -D db_name -t table_name [-i ignored_lines]\n\nThis command will import csv file located on filepath to database db_name's table table_name.You can use optional parameter -i to decide how many lines in csv file will be igored during import.\n\nNote:This program uses root identity to login to mysql server, so you need to input the password of root user in mysql."""
+while getopts "f:D:t:i:" arg #选项后面的冒号表示该选项需要参数
+do
+  case $arg in
+    f)
+      # 列出当前目录
+      directory=$(pwd)
+      # filepath参数
+      filepath=$OPTARG
+      # 如果不是绝对路径，在路径前加上当前目录，转为绝对路径
+      if [[ "$OPTARG" != $directory* ]];then
+        filepath=$directory/$filepath
+      fi
+      ;;
+    D)
+      db_name=$OPTARG
+      ;;
+    t)
+      table_name=$OPTARG
+      ;;
+    i)
+      ignore_lines=$OPTARG
+      ;;
+    ?)
+      echo $help 
+      ;;
+  esac
+done
+
+err_msg="Error:have not assigned"
+flag=false
+if [ -z "$filepath" ];then
+  echo "$err_msg filepath"
+  flag=true
+fi
+if [ -z "$db_name" ];then
+  echo "$err_msg db_name"
+  flag=true
+fi
+if [ -z "$table_name" ];then
+  echo "$err_msg table_name"
+  flag=true
+fi
+
+$flag && echo $help && exit 1
+
+#echo $filepath
+#echo $db_name
+#echo $table_name
+#echo $ignore_lines
+
+mysql -D $db_name -u root -p << EOF
+load data local infile $file_path
+into table $table_name
+fields terminated by ',' optionally enclosed by '"' escaped by '"'
+lines terminated by '\n'
+ignore 1 lines;
+EOF

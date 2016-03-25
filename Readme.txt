@@ -1,0 +1,8 @@
+1、安装
+  在本文件夹内运行如下命令安装:
+  sudo ./install.sh
+2、命令参数
+  -f filepath      要导入的csv文件
+  -D db_name       要连接的数据库名称
+  -t table_name    要导入到的目标表名称
+  -i ignore_lines  忽略csv文件的前ignore_lines行
