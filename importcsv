@@ -1,4 +1,5 @@
-#!/usr/bin/env sh
+#!/bin/bash
+ignore_lines=0
 help="""
 \nimportcsv 1.0 (2016 Mar 25)\n\nusage: importcsv -f filepath -D db_name -t table_name [-i ignored_lines]\n\nThis command will import csv file located on filepath to database db_name's table table_name.You can use optional parameter -i to decide how many lines in csv file will be igored during import.\n\nNote:This program uses root identity to login to mysql server, so you need to input the password of root user in mysql."""
 while getopts "f:D:t:i:" arg #选项后面的冒号表示该选项需要参数
@@ -46,15 +47,15 @@ fi
 
 $flag && echo $help && exit 1
 
-#echo $filepath
-#echo $db_name
-#echo $table_name
-#echo $ignore_lines
+echo $filepath
+echo $db_name
+echo $table_name
+echo $ignore_lines
 
 mysql -D $db_name -u root -p << EOF
 load data local infile $file_path
 into table $table_name
 fields terminated by ',' optionally enclosed by '"' escaped by '"'
 lines terminated by '\n'
-ignore 1 lines;
+ignore $ignore_lines lines;
 EOF
