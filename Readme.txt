@@ -6,3 +6,5 @@
   -D db_name       要连接的数据库名称
   -t table_name    要导入到的目标表名称
   -i ignore_lines  忽略csv文件的前ignore_lines行
+3、功能
+  将指定的csv文件导入指定数据库的指定表（需自行建表，若表的格式与csv不符会报错）。
