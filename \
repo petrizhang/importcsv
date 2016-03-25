@@ -53,7 +53,7 @@ echo $table_name
 echo $ignore_lines
 
 mysql -D $db_name -u root -p << EOF
-load data local infile '$filepath'
+load data local infile '$file_path'
 into table $table_name
 fields terminated by ',' optionally enclosed by '"' escaped by '"'
 lines terminated by '\n'
