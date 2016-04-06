@@ -47,10 +47,10 @@ fi
 
 $flag && echo -e $help && exit 1
 
-echo $filepath
-echo $db_name
-echo $table_name
-echo $ignore_lines
+#echo $filepath
+#echo $db_name
+#echo $table_name
+#echo $ignore_lines
 
 mysql -D $db_name -u root -p << EOF
 load data local infile '$filepath'
